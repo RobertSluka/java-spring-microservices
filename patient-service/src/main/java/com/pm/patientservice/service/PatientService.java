@@ -12,11 +12,15 @@ import com.pm.patientservice.repository.PatientRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PatientService {
 
+  private static final Logger log = LoggerFactory.getLogger(PatientService.class);
   private final PatientRepository patientRepository;
   private final BillingServiceGrpcClient billingServiceGrpcClient;
   private final KafkaProducer kafkaProducer;
@@ -36,6 +40,7 @@ public class PatientService {
   }
 
   public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
+    log.info("Received patient: {}", patientRequestDTO);
     if (patientRepository.existsByEmail(patientRequestDTO.getEmail())) {
       throw new EmailAlreadyExistsException(
           "A patient with this email " + "already exists"

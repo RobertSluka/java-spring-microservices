@@ -1,5 +1,9 @@
 ### Login Request to retrieve a token
-POST http://lb-7e648e08.elb.localhost.localstack.cloud:4004/auth/login
+#lb-7e648e08.elb => mimics load balancer aws name
+#.localhost.localstack.cloud is a special DNS domain used by LocalStack internally to route
+#POST http://lb-7e648e08.elb.localhost.localstack.cloud:4004/auth/login
+POST http://localhost:4004/auth/login
+#POST http://localhost:4005/login
 Content-Type: application/json
 
 {

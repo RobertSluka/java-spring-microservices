@@ -1,0 +1,23 @@
+version: '3.8'  # You can remove this line as the warning suggests
+
+services:
+  auth-service-db:
+    image: postgres:15
+    container_name: auth-service-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin_user
+      POSTGRES_PASSWORD: admin_pass
+      POSTGRES_DB: db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal  # Changed from backend to internal
+
+volumes:
+  postgres_data:
+
+networks:
+  internal:      # Changed from backend to internal
+    external: true  # Optional: makes it truly internal (no external access)

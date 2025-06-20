@@ -18,7 +18,7 @@ public class KafkaProducer {
   }
 
   public void sendEvent(Patient patient) {
-    PatientEvent event = PatientEvent.newBuilder()
+  PatientEvent event = PatientEvent.newBuilder()
         .setPatientId(patient.getId().toString())
         .setName(patient.getName())
         .setEmail(patient.getEmail())
@@ -27,6 +27,7 @@ public class KafkaProducer {
 
     try {
       kafkaTemplate.send("patient", event.toByteArray());
+      log.info("PatientCreated event sent for: {}", event.getPatientId());
     } catch (Exception e) {
       log.error("Error sending PatientCreated event: {}", event);
     }
