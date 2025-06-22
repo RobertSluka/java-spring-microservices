@@ -13,7 +13,7 @@ public class PatientIntegrationTest {
   }
 
   @Test
-  public void shouldReturnPatientsWithValidToken () {
+  public void should_create_patient () {
     String loginPayload = """
           {
             "email": "testuser@test.com",
@@ -25,7 +25,7 @@ public class PatientIntegrationTest {
         .contentType("application/json")
         .body(loginPayload)
         .when()
-        .post("/auth/login")
+        .post("/api/patients")
         .then()
         .statusCode(200)
         .extract()
@@ -35,7 +35,7 @@ public class PatientIntegrationTest {
     given()
         .header("Authorization", "Bearer " + token)
         .when()
-        .get("/api/patients")
+        .get("/api/patients/")
         .then()
         .statusCode(200)
         .body("patients", notNullValue());
