@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,13 @@ public class PatientService {
     return patientRepository.findByEmail(email)
             .map(PatientMapper::toDTO)
             .orElseThrow(() -> new ResourceNotFoundException("Patient not found with email: " + email));
+  }
+
+  @Cacheable(value = "PATIENT_CACHE", key = "#id")
+  public PatientResponseDTO getPatientById(UUID id)  {
+    return patientRepository.findById(id)
+            .map(PatientMapper::toDTO)
+            .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + id));
   }
 
 
@@ -85,7 +93,7 @@ public class PatientService {
     Patient updatedPatient = patientRepository.save(patient);
     return PatientMapper.toDTO(updatedPatient);
   }
-
+  @CacheEvict(value = "PATIENT_CACHE", key = "#id")
   public void deletePatient(UUID id) {
     patientRepository.deleteById(id);
   }

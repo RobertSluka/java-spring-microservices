@@ -37,17 +37,25 @@ public class PatientController {
     List<PatientResponseDTO> patients = patientService.getPatients();
     return ResponseEntity.ok().body(patients);
   }
-  @GetMapping("/email")
-  @Cacheable(value = "PATIENT_CACHE", key = "#email")
+//  @GetMapping("/email")
+//  @Cacheable(value = "PATIENT_CACHE", key = "#email")
+//  @Operation(summary = "Get Patients")
+//  public PatientResponseDTO getPatientByEmail(@RequestParam String email) throws ChangeSetPersister.NotFoundException {
+//    return patientService.getPatientByEmail(email);
+//
+//  }
+
+  @GetMapping("/id")
+  @Cacheable(value = "PATIENT_CACHE", key = "#id")
   @Operation(summary = "Get Patients")
-  public ResponseEntity<PatientResponseDTO>  getPatientByEmail(@RequestParam String email) throws ChangeSetPersister.NotFoundException {
-    return ResponseEntity.ok(patientService.getPatientByEmail(email));
+  public PatientResponseDTO getPatientById(@RequestParam UUID id) throws ChangeSetPersister.NotFoundException {
+    return patientService.getPatientById(id);
 
   }
 
   @PostMapping
   @Operation(summary = "Create a new Patient")
-  @CachePut(value = "PATIENT_CACHE", key = "#result.id()")
+  @CachePut(value = "PATIENT_CACHE", key = "#result.id")
   public ResponseEntity<PatientResponseDTO> createPatient(
       @Validated({Default.class, CreatePatientValidationGroup.class})
       @RequestBody PatientRequestDTO patientRequestDTO) {
@@ -59,7 +67,7 @@ public class PatientController {
   }
 
   @PutMapping("/{id}")
-  @CachePut(value = "PATIENT_CACHE", key = "#result.id()")
+  @CachePut(value = "PATIENT_CACHE", key = "#result.id")
   @Operation(summary = "Update a new Patient")
   public ResponseEntity<PatientResponseDTO> updatePatient(@PathVariable UUID id,
       @Validated({Default.class}) @RequestBody PatientRequestDTO patientRequestDTO) {
@@ -71,7 +79,6 @@ public class PatientController {
   }
 
   @DeleteMapping("/{id}")
-  @CacheEvict(value = "PATIENT_CACHE", key = "#patientId")
   @Operation(summary = "Delete a Patient")
   public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
     patientService.deletePatient(id);

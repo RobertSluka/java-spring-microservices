@@ -1,5 +1,8 @@
 package com.pm.patientservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PatientResponseDTO {
   private String id;
   private String name;

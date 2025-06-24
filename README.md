@@ -42,10 +42,10 @@ A visual representation of the service interactions is being developed. This wil
 
 ##  Kafka event flows
 
-![kafka_image_flow.png](kafka_image_flow.png)
+![kafka_image_flow.png](Images/kafka_image_flow.png)
 
 ##  AWS cloud architecture
-![Architecture_in_ECS.png](Architecture_in_ECS.png)
+![Architecture_in_ECS.png](Images/Architecture_in_ECS.png)
 > Will be published soon as PNG + Mermaid syntax.
 
 ---
