@@ -17,12 +17,18 @@ This project is a **fork** of [chrisblakely01/java-spring-microservices](https:/
 
 ---
 ### 💡 Suggestions for Future Improvements
+- Add Redis caching to improve performance and reduce database load 
+- Implement rate limiting and protect your APIs from abuse using Spring Cloud Gateway 
+- Set up Prometheus and Grafana monitoring for production-grade observability 
+- Use Resilience4j circuit breakers and fallbacks for reliable inter-service communication 
+- Integrate advanced testing: Rest Assured, Testcontainers, and automated rate limit tests 
+- Deploy with Docker, AWS CDK, and ECS Fargate — production-ready infrastructure, locally or in the cloud
 - Create a new repo: `grpc-protos-repo` (or folder within monorepo if preferred)
 - Move all `.proto` files (e.g., for `BillingService`, `PatientService`) there
 - Integrate this repo as a **Git submodule** inside each service
 - Update `build.gradle` or `pom.xml` in each service to generate stubs from the shared `.proto`
 - Automate build, test, and deployment using GitHub Actions (with Docker + Maven workflows)
-- Add Prometheus for metrics, Grafana for dashboards, and Zipkin for tracing
+
 
 ---
 

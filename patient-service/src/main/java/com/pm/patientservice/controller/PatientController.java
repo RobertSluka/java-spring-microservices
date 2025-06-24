@@ -6,10 +6,14 @@ import com.pm.patientservice.dto.validators.CreatePatientValidationGroup;
 import com.pm.patientservice.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.cache.annotation.Cacheable;
+
 import jakarta.validation.groups.Default;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +30,7 @@ public class PatientController {
     this.patientService = patientService;
   }
 
+
   @GetMapping
   @Operation(summary = "Get Patients")
   public ResponseEntity<List<PatientResponseDTO>> getPatients() {
@@ -33,6 +38,7 @@ public class PatientController {
     return ResponseEntity.ok().body(patients);
   }
   @GetMapping("/email")
+  @Cacheable(value = "PATIENT_CACHE", key = "#email")
   @Operation(summary = "Get Patients")
   public ResponseEntity<PatientResponseDTO>  getPatientByEmail(@RequestParam String email) throws ChangeSetPersister.NotFoundException {
     return ResponseEntity.ok(patientService.getPatientByEmail(email));
@@ -41,6 +47,7 @@ public class PatientController {
 
   @PostMapping
   @Operation(summary = "Create a new Patient")
+  @CachePut(value = "PATIENT_CACHE", key = "#result.id()")
   public ResponseEntity<PatientResponseDTO> createPatient(
       @Validated({Default.class, CreatePatientValidationGroup.class})
       @RequestBody PatientRequestDTO patientRequestDTO) {
@@ -52,6 +59,7 @@ public class PatientController {
   }
 
   @PutMapping("/{id}")
+  @CachePut(value = "PATIENT_CACHE", key = "#result.id()")
   @Operation(summary = "Update a new Patient")
   public ResponseEntity<PatientResponseDTO> updatePatient(@PathVariable UUID id,
       @Validated({Default.class}) @RequestBody PatientRequestDTO patientRequestDTO) {
@@ -63,6 +71,7 @@ public class PatientController {
   }
 
   @DeleteMapping("/{id}")
+  @CacheEvict(value = "PATIENT_CACHE", key = "#patientId")
   @Operation(summary = "Delete a Patient")
   public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
     patientService.deletePatient(id);

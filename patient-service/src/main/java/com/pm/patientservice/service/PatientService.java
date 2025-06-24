@@ -11,12 +11,10 @@ import com.pm.patientservice.model.Patient;
 import com.pm.patientservice.repository.PatientRepository;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class PatientService {
@@ -33,7 +31,7 @@ public class PatientService {
     this.kafkaProducer = kafkaProducer;
   }
 
-
+  @Cacheable(value = "PATIENT_CACHE", key = "#email")
   public PatientResponseDTO getPatientByEmail(String email)  {
     System.out.println("Looking for: " + email);
     return patientRepository.findByEmail(email)
