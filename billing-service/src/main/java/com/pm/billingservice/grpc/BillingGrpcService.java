@@ -1,8 +1,9 @@
 package com.pm.billingservice.grpc;
 
+import billing.BillingServiceGrpc.BillingServiceImplBase;
 import billing.BillingRequest;
 import billing.BillingResponse;
-import billing.BillingServiceGrpc.BillingServiceImplBase;
+import billing.BillingServiceGrpc;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;

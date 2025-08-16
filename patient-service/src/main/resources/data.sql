@@ -155,3 +155,10 @@ SELECT '223e4567-e89b-12d3-a456-426614174014',
        '1987-10-17',
        '2024-03-29'
 WHERE NOT EXISTS (SELECT 1 FROM patient WHERE id = '223e4567-e89b-12d3-a456-426614174014');
+
+SELECT * FROM patient
+WHERE LOWER(name) LIKE LOWER(CONCAT('%', CAST(:filterName AS TEXT), '%'))
+  AND date_of_birth > CAST(:2000-01-01 AS DATE)
+
+SELECT * FROM patient
+WHERE date_of_birth < DATE '1990-12-31';

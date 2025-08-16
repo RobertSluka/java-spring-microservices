@@ -10,8 +10,10 @@ import com.pm.patientservice.mapper.PatientMapper;
 import com.pm.patientservice.model.Patient;
 import com.pm.patientservice.repository.PatientRepository;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PatientService {
+
 
   private final PatientRepository patientRepository;
   private final BillingServiceGrpcClient billingServiceGrpcClient;
@@ -32,13 +35,7 @@ public class PatientService {
     this.kafkaProducer = kafkaProducer;
   }
 
-  @Cacheable(value = "PATIENT_CACHE", key = "#email")
-  public PatientResponseDTO getPatientByEmail(String email)  {
-    System.out.println("Looking for: " + email);
-    return patientRepository.findByEmail(email)
-            .map(PatientMapper::toDTO)
-            .orElseThrow(() -> new ResourceNotFoundException("Patient not found with email: " + email));
-  }
+
 
   @Cacheable(value = "PATIENT_CACHE", key = "#id")
   public PatientResponseDTO getPatientById(UUID id)  {
@@ -54,6 +51,24 @@ public class PatientService {
     return patients.stream().map(PatientMapper::toDTO).toList();
   }
 
+
+  public List<PatientResponseDTO> getPatientsByFilter(String filterName, LocalDate dateOfBirth){
+    List<Patient> patients = patientRepository.findByNameYear(filterName,dateOfBirth);
+    return patients.stream().map(PatientMapper::toDTO).toList();
+  }
+
+  public List<PatientResponseDTO> sortByName(){
+    List<Patient> patients = patientRepository.sortByName();
+    return patients.stream().map(PatientMapper::toDTO).toList();
+  }
+
+  public List<PatientResponseDTO> sortByDateOfBirth(){
+    List<Patient> patients = patientRepository.sortByDateOfBirth();
+    return patients.stream().map(PatientMapper::toDTO).toList();
+  }
+
+
+
   public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
     if (patientRepository.existsByEmail(patientRequestDTO.getEmail())) {
       throw new EmailAlreadyExistsException(
@@ -64,8 +79,8 @@ public class PatientService {
     Patient newPatient = patientRepository.save(
         PatientMapper.toModel(patientRequestDTO));
 
-    billingServiceGrpcClient.createBillingAccount(newPatient.getId().toString(),
-        newPatient.getName(), newPatient.getEmail());
+//    billingServiceGrpcClient.createBillingAccount(newPatient.getId().toString(),
+//        newPatient.getName(), newPatient.getEmail());
 
     kafkaProducer.sendEvent(newPatient);
 

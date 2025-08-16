@@ -9,12 +9,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.cache.annotation.Cacheable;
 
 import jakarta.validation.groups.Default;
+
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +67,44 @@ public class PatientController {
     PatientResponseDTO patientResponseDTO = patientService.createPatient(
         patientRequestDTO);
 
+
+
     return ResponseEntity.ok().body(patientResponseDTO);
+  }
+
+  @GetMapping("/filter")
+  public ResponseEntity<List<PatientResponseDTO>> getPatientsByFilter(
+//          @RequestParam(required = false) String sortBy,
+          @RequestParam(required = false) String filterName,
+          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth) {
+
+    List<PatientResponseDTO> patients = patientService.getPatientsByFilter( filterName, dateOfBirth);
+    return ResponseEntity.ok(patients);
+  }
+
+  @GetMapping("/sort")
+  public ResponseEntity<List<PatientResponseDTO>> sortPatientsByFilter(
+          @RequestParam(required = false) String sortBy){
+//    if (sortBy == null) {
+//      return ResponseEntity.badRequest().body(Collections.emptyList());
+//    }
+
+    List<PatientResponseDTO> patients;
+
+    switch (sortBy.toLowerCase()) {
+      case "name":
+        patients = patientService.sortByName();
+        break;
+      case "dob":
+      case "dateofbirth":
+        patients = patientService.sortByDateOfBirth();
+        break;
+      default:
+        return ResponseEntity.badRequest().body(Collections.emptyList());
+    }
+
+    return ResponseEntity.ok(patients);
+
   }
 
   @PutMapping("/{id}")
