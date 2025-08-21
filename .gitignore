@@ -85,3 +85,5 @@ Thumbs.db
 
 # AWS credentials
 .aws/
+application.properties
+application-*.properties

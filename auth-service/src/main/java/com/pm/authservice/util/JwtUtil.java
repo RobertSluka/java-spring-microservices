@@ -1,5 +1,6 @@
 package com.pm.authservice.util;
 
+import com.pm.authservice.model.Role;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -23,7 +24,7 @@ public class JwtUtil {
     this.secretKey = Keys.hmacShaKeyFor(keyBytes);
   }
 
-  public String generateToken(String email, String role) {
+  public String generateToken(String email, Role role) {
     return Jwts.builder()
         .subject(email)
         .claim("role", role)
