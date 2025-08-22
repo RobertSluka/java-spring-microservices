@@ -10,7 +10,7 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.pm</groupId>
-  <artifactId>patient-service</artifactId>
+  <artifactId>doctor-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>patient-service</name>
   <description>patient-service</description>

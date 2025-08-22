@@ -31,12 +31,15 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
   List<Patient> findByNameYear(@Param("filterName") String filterName,
                              @Param("dateOfBirth") LocalDate dateOfBirth);
 
+
   @Query("""
 SELECT p FROM Patient p
 ORDER BY p.dateOfBirth ASC
 """)
   List<Patient> sortByDateOfBirth();
 
+  List<Patient> getPatientsByName(String name);
+  List<Patient> getPatientsByDateOfBirth(LocalDate dateOfBirth);
 
   @Query("""
 SELECT p FROM Patient p

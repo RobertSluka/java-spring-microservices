@@ -41,6 +41,23 @@ public class PatientController {
     List<PatientResponseDTO> patients = patientService.getPatients();
     return ResponseEntity.ok().body(patients);
   }
+
+  @GetMapping("/name")
+  @Operation(summary = "Get Patients")
+  public ResponseEntity<List<PatientResponseDTO>> getPatientByName(String name) {
+    List<PatientResponseDTO> patients = patientService.getPatientByName(name);
+    return ResponseEntity.ok().body(patients);
+  }
+
+
+
+  @GetMapping("/dateOfBirth")
+  public ResponseEntity<List<PatientResponseDTO>> getPatientByDateOfBirth(
+          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth) {
+
+    List<PatientResponseDTO> patients = patientService.getPatientByDateOfBirth(dateOfBirth);
+    return ResponseEntity.ok(patients);
+  }
 //  @GetMapping("/email")
 //  @Cacheable(value = "PATIENT_CACHE", key = "#email")
 //  @Operation(summary = "Get Patients")

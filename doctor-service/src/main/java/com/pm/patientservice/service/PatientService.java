@@ -62,8 +62,18 @@ public class PatientService {
     return patients.stream().map(PatientMapper::toDTO).toList();
   }
 
+  public List<PatientResponseDTO> getPatientByName(String name){
+    List<Patient> patients = patientRepository.getPatientsByName(name);
+    return patients.stream().map(PatientMapper::toDTO).toList();
+  }
+
   public List<PatientResponseDTO> sortByDateOfBirth(){
     List<Patient> patients = patientRepository.sortByDateOfBirth();
+    return patients.stream().map(PatientMapper::toDTO).toList();
+  }
+
+  public List<PatientResponseDTO> getPatientByDateOfBirth(LocalDate dateOfBirth){
+    List<Patient> patients = patientRepository.getPatientsByDateOfBirth(dateOfBirth);
     return patients.stream().map(PatientMapper::toDTO).toList();
   }
 

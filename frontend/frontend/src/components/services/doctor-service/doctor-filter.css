@@ -1,0 +1,75 @@
+/* Dark theme for DoctorFilter component */
+
+.doctor-filter {
+    background-color: #1e1e1e;   /* dark background */
+    color: #ffffff;              /* default text color */
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Headings */
+.doctor-filter h3 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+/* Form labels */
+.doctor-filter .form-label {
+    color: #cccccc;
+    font-weight: 500;
+}
+
+/* Inputs / selects */
+.doctor-filter .form-control,
+.doctor-filter .form-select {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #444;
+}
+
+.doctor-filter .form-control::placeholder {
+    color: #aaaaaa;
+}
+
+.doctor-filter .form-control:focus,
+.doctor-filter .form-select:focus {
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+/* Buttons */
+.doctor-filter .btn-secondary {
+    background-color: #444;
+    border-color: #555;
+    color: #fff;
+}
+
+.doctor-filter .btn-outline-primary {
+    color: #00bfff;
+    border-color: #00bfff;
+}
+
+.doctor-filter .btn-outline-primary:hover {
+    background-color: #00bfff;
+    color: #1e1e1e;
+}
+
+/* Table */
+.doctor-filter table {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border-color: #555;
+}
+
+.doctor-filter thead th {
+    background-color: #333;
+    color: #ffffff;
+}
+
+.doctor-filter tbody td {
+    color: #eeeeee;
+}
+
+.doctor-filter tbody tr:hover {
+    background-color: #3a3a3a;
+}

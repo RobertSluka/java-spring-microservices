@@ -26,8 +26,8 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/login", "/validate","/register").permitAll()
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
+                    .requestMatchers("/chat/**").hasRole("ADMIN")
+                    .requestMatchers("/patients/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
             )
             .formLogin(AbstractHttpConfigurer::disable)
